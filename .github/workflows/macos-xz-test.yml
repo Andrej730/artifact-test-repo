@@ -1,0 +1,132 @@
+name: macOS XZ Availability Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test-xz-on-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check initial xz availability
+      run: |
+        echo "=== Initial xz availability check ==="
+        if command -v xz >/dev/null 2>&1; then
+          echo "✅ xz is available in PATH"
+          xz --version
+        else
+          echo "❌ xz is NOT available in PATH"
+        fi
+        echo ""
+        
+    - name: Check initial tar xz support
+      run: |
+        echo "=== Initial tar xz support check ==="
+        if tar --help 2>&1 | grep -q "xz\|lzma"; then
+          echo "✅ tar appears to support xz compression"
+        else
+          echo "❌ tar may not support xz compression"
+        fi
+        echo ""
+        
+    - name: Install dependencies via Homebrew
+      run: |
+        echo "=== Installing dependencies ==="
+        brew update
+        brew install git bison autoconf automake libffi findutils
+        echo "Installation completed"
+        echo ""
+        
+    - name: Check xz availability after brew installs
+      run: |
+        echo "=== Post-installation xz availability check ==="
+        if command -v xz >/dev/null 2>&1; then
+          echo "✅ xz is now available in PATH"
+          xz --version
+          echo "xz location: $(which xz)"
+        else
+          echo "❌ xz is still NOT available in PATH"
+        fi
+        echo ""
+        
+    - name: Download and test tar -xf with .tar.xz file
+      run: |
+        echo "=== Testing tar -xf with .tar.xz file ==="
+        echo "Downloading json.tar.xz..."
+        curl -L -o json.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+        
+        echo "File downloaded, checking file type:"
+        file json.tar.xz
+        echo ""
+        
+        echo "Attempting to extract with tar -xf:"
+        if tar -xf json.tar.xz; then
+          echo "✅ tar -xf successfully extracted the .tar.xz file"
+          echo "Contents of extracted directory:"
+          ls -la
+          if [ -d "json" ]; then
+            echo "json directory contents:"
+            ls -la json/ | head -10
+          fi
+        else
+          echo "❌ tar -xf failed to extract the .tar.xz file"
+          exit_code=$?
+          echo "Exit code: $exit_code"
+        fi
+        echo ""
+        
+    - name: Test manual xz decompression if available
+      run: |
+        echo "=== Testing manual xz decompression ==="
+        if command -v xz >/dev/null 2>&1; then
+          # Download fresh copy for manual test
+          curl -L -o json-manual.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+          
+          echo "Attempting manual xz decompression:"
+          if xz -d json-manual.tar.xz; then
+            echo "✅ xz -d successfully decompressed the file"
+            echo "Resulting file:"
+            ls -la json-manual.tar
+            
+            echo "Attempting to extract with tar:"
+            if tar -xf json-manual.tar; then
+              echo "✅ tar successfully extracted the decompressed file"
+            else
+              echo "❌ tar failed to extract the decompressed file"
+            fi
+          else
+            echo "❌ xz -d failed to decompress the file"
+          fi
+        else
+          echo "⚠️  xz not available for manual decompression test"
+        fi
+        echo ""
+        
+    - name: Check what packages provide xz
+      run: |
+        echo "=== Checking what packages might provide xz ==="
+        echo "Searching for xz-related packages:"
+        brew search xz || true
+        echo ""
+        
+        echo "Checking if xz is available via different package:"
+        if brew list --formula | grep -i xz; then
+          echo "Found xz-related packages installed"
+        else
+          echo "No xz-related packages found in installed formulas"
+        fi
+        
+    - name: Final summary
+      run: |
+        echo "=== FINAL SUMMARY ==="
+        echo "xz command availability: $(command -v xz >/dev/null 2>&1 && echo 'YES' || echo 'NO')"
+        echo "tar xz support test: $(test -f json/README.md 2>/dev/null && echo 'SUCCESS' || echo 'FAILED')"
+        echo "macOS version: $(sw_vers -productVersion)"
+        echo "Homebrew version: $(brew --version | head -1)"
