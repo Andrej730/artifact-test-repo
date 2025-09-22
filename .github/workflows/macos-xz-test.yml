@@ -15,24 +15,83 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Check initial xz availability
+    - name: BEFORE - Check xz availability
       run: |
-        echo "=== Initial xz availability check ==="
+        echo "🔍 === BEFORE INSTALLING DEPENDENCIES ==="
+        echo "=== xz availability check ==="
         if command -v xz >/dev/null 2>&1; then
           echo "✅ xz is available in PATH"
-          xz --version
+          echo "xz version: $(xz --version | head -1)"
+          echo "xz location: $(which xz)"
         else
           echo "❌ xz is NOT available in PATH"
         fi
         echo ""
         
-    - name: Check initial tar xz support
+    - name: BEFORE - Check tar xz support
       run: |
-        echo "=== Initial tar xz support check ==="
+        echo "=== tar xz support check ==="
         if tar --help 2>&1 | grep -q "xz\|lzma"; then
           echo "✅ tar appears to support xz compression"
         else
           echo "❌ tar may not support xz compression"
+        fi
+        echo ""
+        
+    - name: BEFORE - Test downloading and extracting .tar.xz file
+      run: |
+        echo "=== Testing tar -xf with .tar.xz file (BEFORE) ==="
+        echo "Downloading json.tar.xz..."
+        curl -L -o json-before.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+        
+        echo "File downloaded, checking file type:"
+        file json-before.tar.xz
+        echo ""
+        
+        echo "Attempting to extract with tar -xf:"
+        if tar -xf json-before.tar.xz; then
+          echo "✅ tar -xf successfully extracted the .tar.xz file"
+          echo "Contents of extracted directory:"
+          ls -la | grep json
+          if [ -d "json" ]; then
+            echo "json directory found - extraction successful"
+            # Clean up for next test
+            rm -rf json
+          fi
+        else
+          echo "❌ tar -xf failed to extract the .tar.xz file"
+          exit_code=$?
+          echo "Exit code: $exit_code"
+        fi
+        echo ""
+        
+    - name: BEFORE - Test manual xz decompression
+      run: |
+        echo "=== Testing manual xz decompression (BEFORE) ==="
+        if command -v xz >/dev/null 2>&1; then
+          # Download fresh copy for manual test
+          curl -L -o json-manual-before.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+          
+          echo "Attempting manual xz decompression:"
+          if xz -d json-manual-before.tar.xz; then
+            echo "✅ xz -d successfully decompressed the file"
+            echo "Resulting file:"
+            ls -la json-manual-before.tar
+            
+            echo "Attempting to extract with tar:"
+            if tar -xf json-manual-before.tar; then
+              echo "✅ tar successfully extracted the decompressed file"
+              # Clean up
+              rm -f json-manual-before.tar
+              rm -rf json
+            else
+              echo "❌ tar failed to extract the decompressed file"
+            fi
+          else
+            echo "❌ xz -d failed to decompress the file"
+          fi
+        else
+          echo "⚠️  xz not available for manual decompression test"
         fi
         echo ""
         
@@ -44,15 +103,80 @@ jobs:
         echo "Installation completed"
         echo ""
         
-    - name: Check xz availability after brew installs
+    - name: AFTER - Check xz availability after brew installs
       run: |
-        echo "=== Post-installation xz availability check ==="
+        echo "🔍 === AFTER INSTALLING DEPENDENCIES ==="
+        echo "=== xz availability check ==="
         if command -v xz >/dev/null 2>&1; then
-          echo "✅ xz is now available in PATH"
-          xz --version
+          echo "✅ xz is available in PATH"
+          echo "xz version: $(xz --version | head -1)"
           echo "xz location: $(which xz)"
         else
-          echo "❌ xz is still NOT available in PATH"
+          echo "❌ xz is NOT available in PATH"
+        fi
+        echo ""
+        
+    - name: AFTER - Check tar xz support
+      run: |
+        echo "=== tar xz support check ==="
+        if tar --help 2>&1 | grep -q "xz\|lzma"; then
+          echo "✅ tar appears to support xz compression"
+        else
+          echo "❌ tar may not support xz compression"
+        fi
+        echo ""
+        
+    - name: AFTER - Test downloading and extracting .tar.xz file
+      run: |
+        echo "=== Testing tar -xf with .tar.xz file (AFTER) ==="
+        echo "Downloading json.tar.xz..."
+        curl -L -o json-after.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+        
+        echo "File downloaded, checking file type:"
+        file json-after.tar.xz
+        echo ""
+        
+        echo "Attempting to extract with tar -xf:"
+        if tar -xf json-after.tar.xz; then
+          echo "✅ tar -xf successfully extracted the .tar.xz file"
+          echo "Contents of extracted directory:"
+          ls -la | grep json
+          if [ -d "json" ]; then
+            echo "json directory found - extraction successful"
+            echo "Sample json directory contents:"
+            ls -la json/ | head -5
+          fi
+        else
+          echo "❌ tar -xf failed to extract the .tar.xz file"
+          exit_code=$?
+          echo "Exit code: $exit_code"
+        fi
+        echo ""
+        
+    - name: AFTER - Test manual xz decompression
+      run: |
+        echo "=== Testing manual xz decompression (AFTER) ==="
+        if command -v xz >/dev/null 2>&1; then
+          # Download fresh copy for manual test
+          curl -L -o json-manual-after.tar.xz https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+          
+          echo "Attempting manual xz decompression:"
+          if xz -d json-manual-after.tar.xz; then
+            echo "✅ xz -d successfully decompressed the file"
+            echo "Resulting file:"
+            ls -la json-manual-after.tar
+            
+            echo "Attempting to extract with tar:"
+            if tar -xf json-manual-after.tar; then
+              echo "✅ tar successfully extracted the decompressed file"
+            else
+              echo "❌ tar failed to extract the decompressed file"
+            fi
+          else
+            echo "❌ xz -d failed to decompress the file"
+          fi
+        else
+          echo "⚠️  xz not available for manual decompression test"
         fi
         echo ""
         
@@ -125,8 +249,26 @@ jobs:
         
     - name: Final summary
       run: |
-        echo "=== FINAL SUMMARY ==="
-        echo "xz command availability: $(command -v xz >/dev/null 2>&1 && echo 'YES' || echo 'NO')"
-        echo "tar xz support test: $(test -f json/README.md 2>/dev/null && echo 'SUCCESS' || echo 'FAILED')"
-        echo "macOS version: $(sw_vers -productVersion)"
-        echo "Homebrew version: $(brew --version | head -1)"
+        echo "📊 === FINAL COMPARISON SUMMARY ==="
+        echo ""
+        echo "🔍 BEFORE installing dependencies:"
+        echo "  - xz availability: $(ls json-before.tar.xz >/dev/null 2>&1 && echo 'TESTED' || echo 'NOT TESTED')"
+        echo "  - tar extraction: $(ls json-manual-before.tar >/dev/null 2>&1 && echo 'WORKED' || echo 'UNKNOWN')"
+        echo ""
+        echo "🔍 AFTER installing dependencies:"
+        echo "  - xz command: $(command -v xz >/dev/null 2>&1 && echo 'YES' || echo 'NO')"
+        echo "  - tar extraction: $(test -d json 2>/dev/null && echo 'SUCCESS' || echo 'FAILED')"
+        echo ""
+        echo "🖥️  Environment info:"
+        echo "  - macOS version: $(sw_vers -productVersion)"
+        echo "  - Homebrew version: $(brew --version | head -1)"
+        echo ""
+        echo "📋 Dependencies installed:"
+        echo "  - git (upgraded)"
+        echo "  - bison (keg-only)"
+        echo "  - autoconf + m4"
+        echo "  - automake" 
+        echo "  - libffi (keg-only)"
+        echo "  - findutils (with g prefix)"
+        echo ""
+        echo "🎯 CONCLUSION: This test will show if the dependencies affected xz availability"
