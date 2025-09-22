@@ -46,3 +46,10 @@ jobs:
           test.log
           !.git/
         retention-days: 7
+        
+    - name: This step should NOT run after failure
+      run: |
+        echo "🚨 WARNING: This step is running even though previous step failed!"
+        echo "This message should NOT appear in the logs if the workflow failed properly"
+        echo "Current time: $(date)"
+        echo "If you see this message, it means steps continue to run after failure"
