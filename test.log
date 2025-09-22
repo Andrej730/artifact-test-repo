@@ -1,0 +1,13 @@
+2025-09-22 10:30:00 [INFO] Application starting...
+2025-09-22 10:30:01 [DEBUG] Initializing configuration
+2025-09-22 10:30:02 [INFO] Database connection established
+2025-09-22 10:30:03 [DEBUG] Loading user preferences
+2025-09-22 10:30:04 [WARNING] Cache size approaching limit (85% full)
+2025-09-22 10:30:05 [INFO] Processing request: GET /api/users
+2025-09-22 10:30:06 [DEBUG] Validating authentication token
+2025-09-22 10:30:07 [ERROR] Invalid token format detected
+2025-09-22 10:30:08 [ERROR] Authentication failed for user request
+2025-09-22 10:30:09 [FATAL] Critical system error: Database connection lost
+2025-09-22 10:30:10 [ERROR] Unable to recover from database failure
+2025-09-22 10:30:11 [INFO] Initiating emergency shutdown sequence
+2025-09-22 10:30:12 [ERROR] Application terminated unexpectedly

@@ -1,0 +1,52 @@
+name: Test Failing Workflow with Artifact Upload
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test-and-fail:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create additional log entries
+      run: |
+        echo "$(date): Starting test execution..." >> test.log
+        echo "$(date): Running unit tests..." >> test.log
+        echo "$(date): Test 1 - PASSED" >> test.log
+        echo "$(date): Test 2 - PASSED" >> test.log
+        echo "$(date): Test 3 - FAILED" >> test.log
+        echo "$(date): ERROR: Critical test failure detected" >> test.log
+        echo "$(date): Stack trace: NullPointerException at line 42" >> test.log
+        echo "$(date): Build process terminated with errors" >> test.log
+        
+    - name: Simulate build failure
+      run: |
+        echo "Running build process..."
+        echo "Compiling source files..."
+        echo "ERROR: Build failed due to test failures!"
+        exit 1
+        
+    - name: Upload log artifacts (runs even on failure)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs
+        path: test.log
+        retention-days: 30
+        
+    - name: Upload additional artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: failure-reports
+        path: |
+          test.log
+          !.git/
+        retention-days: 7
