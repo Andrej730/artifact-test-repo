@@ -5,6 +5,7 @@ on:
 
 jobs:
   test-xz-on-macos:
+    if: false
     runs-on: macos-latest
     
     steps:

@@ -5,6 +5,7 @@ on:
 
 jobs:
   test-and-fail:
+    if: false
     runs-on: ubuntu-latest
     
     steps:

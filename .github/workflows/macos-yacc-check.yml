@@ -1,0 +1,46 @@
+name: macOS Yacc Availability Check
+
+on:
+  push:
+
+jobs:
+  check-yacc-on-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: BEFORE - Check yacc availability
+      run: |
+        echo "🔍 === BEFORE INSTALLING DEPENDENCIES ==="
+        echo "=== yacc availability check ==="
+        if command -v yacc >/dev/null 2>&1; then
+          echo "✅ yacc is available in PATH"
+          echo "yacc version: $(yacc --version 2>&1 | head -1 || echo 'version not available')"
+          echo "yacc location: $(which yacc)"
+        else
+          echo "❌ yacc is NOT available in PATH"
+        fi
+        echo ""
+        
+    - name: Install dependencies via Homebrew
+      run: |
+        echo "=== Installing dependencies ==="
+        brew update
+        brew install git bison autoconf automake libffi findutils
+        echo "Installation completed"
+        echo ""
+        
+    - name: AFTER - Check yacc availability after brew installs
+      run: |
+        echo "🔍 === AFTER INSTALLING DEPENDENCIES ==="
+        echo "=== yacc availability check ==="
+        if command -v yacc >/dev/null 2>&1; then
+          echo "✅ yacc is available in PATH"
+          echo "yacc version: $(yacc --version 2>&1 | head -1 || echo 'version not available')"
+          echo "yacc location: $(which yacc)"
+        else
+          echo "❌ yacc is NOT available in PATH"
+        fi
+        echo ""
