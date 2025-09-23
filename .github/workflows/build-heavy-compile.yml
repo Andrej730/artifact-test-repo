@@ -1,0 +1,40 @@
+name: Build Heavy Compile Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-heavy-compile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build
+
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1
+      with:
+        key: ubuntu-latest-${{ runner.arch }}
+
+    - name: Configure build
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G Ninja
+
+    - name: Build with timing
+      run: |
+        cd build
+        time ninja
+
+    - name: Show ccache statistics
+      run: ccache --show-stats

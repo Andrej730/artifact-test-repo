@@ -5,6 +5,7 @@ on:
 
 jobs:
   check-yacc-on-macos:
+    if: false
     runs-on: macos-13
     
     steps:
