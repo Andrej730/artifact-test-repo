@@ -5,11 +5,16 @@ on:
 
 jobs:
   check-yacc-on-macos:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1
+      with:
+        key: mac-${{ runner.arch }}
       
     - name: BEFORE - Check yacc availability
       run: |
