@@ -1,16 +1,18 @@
 name: macOS Yacc Availability Check
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   check-yacc-on-macos:
-    if: false
     runs-on: macos-13
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      
+    - name: Update Homebrew
+      run: brew update
       
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1

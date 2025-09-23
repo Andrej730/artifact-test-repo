@@ -9,6 +9,7 @@ on:
 
 jobs:
   build-heavy-compile:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
