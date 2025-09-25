@@ -1,0 +1,20 @@
+name: Test /usr/local/bin/brew on macOS 14
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-brew:
+    runs-on: macos-14
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check if /usr/local/bin/brew is available
+      run: |
+        if [ -f /usr/local/bin/brew ]; then
+          echo "/usr/local/bin/brew is available"
+        else
+          echo "/usr/local/bin/brew is NOT available"
+        fi
