@@ -20,9 +20,9 @@ jobs:
 
     - name: Install Intel Homebrew and gettext
       run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" --prefix=/usr/local
-        /usr/local/bin/brew install gettext
-        /usr/local/bin/brew --prefix
+        arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        arch -x86_64 /usr/local/bin/brew install gettext
+        arch -x86_64 /usr/local/bin/brew --prefix
 
     - name: Test Python version
       run: |
