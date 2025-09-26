@@ -26,7 +26,9 @@ jobs:
         arch -x86_64 /usr/local/bin/brew --prefix
 
     - name: Check gettext prefix
-      run: brew --prefix gettext
+      run: |
+        brew --prefix gettext
+        brew uses --installed gettext
 
     - name: Test Python version
       run: |
