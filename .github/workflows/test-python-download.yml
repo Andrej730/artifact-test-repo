@@ -15,7 +15,7 @@ jobs:
       run: |
         mkdir -p /Users/runner/work/IfcOpenShell/IfcOpenShell/build/Darwin/x86_64/10.15/install
         cd /Users/runner/work/IfcOpenShell/IfcOpenShell/build/Darwin/x86_64/10.15/install
-        curl -L -o cache-python-3.9.11.tar.gz https://github.com/IfcOpenShell/build-outputs/raw/rockylinux8-x64/Linux/x86_64/install/cache-python-3.9.11.tar.gz
+        curl -L -o cache-python-3.9.11.tar.gz https://github.com/IfcOpenShell/build-outputs/raw/refs/heads/macos-x64/Darwin/x86_64/10.15/install/cache-python-3.9.11.tar.gz
         tar -xzf cache-python-3.9.11.tar.gz
 
     - name: Test Python version
