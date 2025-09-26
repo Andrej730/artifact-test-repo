@@ -19,10 +19,14 @@ jobs:
         tar -xzf cache-python-3.9.11.tar.gz
 
     - name: Install Intel Homebrew and gettext
+      if: false
       run: |
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         arch -x86_64 /usr/local/bin/brew install gettext
         arch -x86_64 /usr/local/bin/brew --prefix
+
+    - name: Check gettext prefix
+      run: brew --prefix gettext
 
     - name: Test Python version
       run: |
