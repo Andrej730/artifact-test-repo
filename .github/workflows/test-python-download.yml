@@ -22,7 +22,7 @@ jobs:
       if: true
       run: |
         arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        arch -x86_64 /usr/local/bin/brew install gettext
+        arch -x86_64 /usr/local/bin/brew install gettext openssl
         arch -x86_64 /usr/local/bin/brew --prefix
 
     - name: Check gettext prefix
