@@ -1,10 +1,6 @@
 name: Build Heavy Compile Test
 
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:

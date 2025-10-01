@@ -1,0 +1,20 @@
+name: Create cache 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cache-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add random file
+        run: echo hi > cache-test.txt
+
+      - name: Cache dependencies
+        uses: actions/cache/save@v4
+        with:
+          path: .
+          key: cache-create-test
