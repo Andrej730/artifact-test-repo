@@ -1,0 +1,24 @@
+name: Print Windows Environment
+
+on:
+  push:
+    paths:
+      - '.github/workflows/print_env_windows.yml'
+  workflow_dispatch: {}
+
+jobs:
+  print-env:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Print env using Node.js
+        shell: pwsh
+        run: |
+          node -e "console.log('USERPROFILE:', process.env.USERPROFILE); console.log('GITHUB_WORKSPACE:', process.env.GITHUB_WORKSPACE);"
