@@ -5,28 +5,16 @@ on:
 
 jobs:
   build-heavy-compile:
-    runs-on: ubuntu-latest
-    container:
-      image: rockylinux:8
+    runs-on: windows-2022
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        dnf -y update
-
-        # Ninja needs it.
-        dnf install -y dnf-plugins-core
-        dnf config-manager --set-enabled powertools
-
-        dnf -y install cmake ninja-build gcc gcc-c++
-
     - name: ccache
       uses: Andrej730/ccache-action@main
       with:
-        key: ubuntu-latest-${{ runner.arch }}
+        key: win-latest-${{ runner.arch }}
 
     - name: Configure build
       run: |
@@ -37,7 +25,7 @@ jobs:
     - name: Build with timing
       run: |
         cd build
-        time ninja
+        ninja
 
     - name: Show ccache statistics
       run: ccache --show-stats
