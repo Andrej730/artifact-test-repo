@@ -1,0 +1,18 @@
+name: CL Info
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run all commands
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        cl
+        python -c "import shutil, os; path = shutil.which('cl'); print('Path:', path); print('Timestamp:', os.path.getmtime(path)); print('Size:', os.path.getsize(path))"
+      shell: cmd
