@@ -1,0 +1,19 @@
+name: sysconfig-macos-arm64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-sysconfig:
+    runs-on: macos-14
+    steps:
+      - name: Run python -m sysconfig
+        run: |
+          python -m sysconfig > sysconfig_output.txt
+          echo "Python sysconfig output:"
+          cat sysconfig_output.txt
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: sysconfig-output
+          path: sysconfig_output.txt
