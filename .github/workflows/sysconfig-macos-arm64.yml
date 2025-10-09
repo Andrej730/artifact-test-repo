@@ -15,14 +15,6 @@ jobs:
         run: brew --prefix zstd
       - name: List contents of arm zstd path
         run: ls $(brew --prefix zstd)
-      - name: Install Intel brew
-        run: arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      - name: Install zstd on Intel brew
-        run: arch -x86_64 /usr/local/bin/brew install zstd
-      - name: Print Intel zstd path
-        run: arch -x86_64 /usr/local/bin/brew --prefix zstd
-      - name: List contents of Intel zstd path
-        run: arch -x86_64 ls $(/usr/local/bin/brew --prefix zstd)
       - name: Print new PATH
         run: echo $PATH
       - name: Check pkg-config version
