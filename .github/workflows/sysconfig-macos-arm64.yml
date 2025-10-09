@@ -29,3 +29,9 @@ jobs:
         run: pkg-config --version
       - name: Print pkg-config pc_path
         run: echo $PKG_CONFIG_PATH
+      - name: Get pkg-config pc_path variable
+        run: pkg-config --variable pc_path pkg-config
+      - name: Check zstd in /usr/local/lib
+        run: ls -la /usr/local/lib/ | grep zstd || echo "No zstd in /usr/local/lib"
+      - name: Check zstd in /usr/local/include
+        run: ls -la /usr/local/include/ | grep zstd || echo "No zstd in /usr/local/include"
