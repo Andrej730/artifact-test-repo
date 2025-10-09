@@ -7,7 +7,17 @@ jobs:
   run-sysconfig:
     runs-on: macos-14
     steps:
-      - name: Install Python 3.11
-        run: brew install python@3.11
-      - name: Run python -m sysconfig
-        run: python3.11 -m sysconfig
+      - name: Print default PATH
+        run: echo $PATH
+      - name: Install zstd from arm brew
+        run: brew install zstd
+      - name: Print path to zstd installed from brew
+        run: which zstd
+      - name: Install Intel brew
+        run: arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      - name: Install zstd on Intel brew
+        run: arch -x86_64 /usr/local/bin/brew install zstd
+      - name: Print Intel zstd path
+        run: arch -x86_64 which zstd
+      - name: Print new PATH
+        run: echo $PATH
