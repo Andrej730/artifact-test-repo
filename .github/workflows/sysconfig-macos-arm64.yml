@@ -25,3 +25,7 @@ jobs:
         run: arch -x86_64 ls $(/usr/local/bin/brew --prefix zstd)
       - name: Print new PATH
         run: echo $PATH
+      - name: Check pkg-config version
+        run: pkg-config --version
+      - name: Print pkg-config pc_path
+        run: echo $PKG_CONFIG_PATH
