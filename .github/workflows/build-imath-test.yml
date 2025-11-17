@@ -15,11 +15,7 @@ jobs:
 
         curl -L https://raw.githubusercontent.com/Andrej730/vcvarsall-pwsh/refs/heads/master/generate-vcvarsall-env.ps1 -o generate-vcvarsall-env.ps1
         pwsh -NoProfile -File .\generate-vcvarsall-env.ps1
-        ls
         . .\vcvarsall-env.ps1
-
-        cl
-        exit 1
 
         curl -L "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip" -o boost-1.86.0-b2-nodocs.zip
         7z x boost-1.86.0-b2-nodocs.zip
