@@ -35,6 +35,8 @@ jobs:
         echo $BOOST_FOLDER
         cmake .. `
           -G Ninja `
+          -DCMAKE_C_COMPILER=cl.exe `
+          -DCMAKE_CXX_COMPILER=cl.exe `
           -DBUILD_SHARED_LIBS=ON `
           -DBUILD_TESTING=OFF `
           -DPYTHON=ON `
