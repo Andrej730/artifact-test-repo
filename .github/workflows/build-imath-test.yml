@@ -29,5 +29,6 @@ jobs:
         git clone https://github.com/AcademySoftwareFoundation/Imath.git
         cd Imath
         mkdir build && cd build
+        echo $BOOST_FOLDER
         cmake .. -G Ninja -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DPYTHON=ON -DCMAKE_PREFIX_PATH=$BOOST_FOLDER -DCMAKE_BUILD_TYPE=Release -DPython3_FIND_STRATEGY=LOCATION
         ninja -v
