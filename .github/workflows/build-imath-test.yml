@@ -13,7 +13,7 @@ jobs:
 
     - name: Configure build
       run: |
-        wget https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip
+        curl -L "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip" -o boost-1.86.0-b2-nodocs.zip
         7z x boost-1.86.0-b2-nodocs.zip
         cd boost-1.86.0
         .\bootstrap.bat
