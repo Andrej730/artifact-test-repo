@@ -1,0 +1,28 @@
+name: build-imath-test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-imath-test:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure build
+      run: |
+        wget https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip
+        7z x boost-1.86.0-b2-nodocs.zip
+        cd boost-1.86.0
+        .\bootstrap.bat
+        .\b2 --with-python variant=release address-model=64 link=shared
+        set BOOST_FOLDER=%cd%\stage
+
+        cd ..
+        git clone https://github.com/AcademySoftwareFoundation/Imath.git
+        cd Imath
+        mkdir build && cd build
+        cmake .. -G Ninja -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DPYTHON=ON -DCMAKE_PREFIX_PATH=%BOOST_FOLDER% -DCMAKE_BUILD_TYPE=Release
+        ninja -v
