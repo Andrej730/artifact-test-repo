@@ -12,20 +12,18 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configure build
-      shell: cmd
       run: |
-        (
-          curl -L "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip" -o boost-1.86.0-b2-nodocs.zip
-          7z x boost-1.86.0-b2-nodocs.zip
-          cd boost-1.86.0
-          .\bootstrap.bat
-          .\b2 --with-python variant=release address-model=64 link=shared
-          set BOOST_FOLDER=%cd%\stage
-          cd ..
-          git clone https://github.com/AcademySoftwareFoundation/Imath.git
-          cd Imath
-          mkdir build && cd build
-          cmake .. -G Ninja -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DPYTHON=ON -DCMAKE_PREFIX_PATH=%BOOST_FOLDER% -DCMAKE_BUILD_TYPE=Release -DPython3_FIND_STRATEGY=LOCATION
-          ninja -v
-        )
+        curl -L "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip" -o boost-1.86.0-b2-nodocs.zip
+        7z x boost-1.86.0-b2-nodocs.zip
 
+        cd boost-1.86.0
+        .\bootstrap.bat
+        .\b2 --with-python variant=release address-model=64 link=shared
+        $BOOST_FOLDER = "$PWD\stage"
+
+        cd ..
+        git clone https://github.com/AcademySoftwareFoundation/Imath.git
+        cd Imath
+        mkdir build && cd build
+        cmake .. -G Ninja -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DPYTHON=ON -DCMAKE_PREFIX_PATH=$BOOST_FOLDER -DCMAKE_BUILD_TYPE=Release
+        ninja -v
