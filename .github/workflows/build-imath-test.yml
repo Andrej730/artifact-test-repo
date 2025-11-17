@@ -15,7 +15,6 @@ jobs:
       run: |
         Set-PSDebug -Trace 1
         $ErrorActionPreference = "Stop"
-        Get-Command vcvars64
         & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
         curl -L "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.zip" -o boost-1.86.0-b2-nodocs.zip
@@ -36,8 +35,6 @@ jobs:
         echo $BOOST_FOLDER
         cmake .. `
           -G Ninja `
-          -DCMAKE_C_COMPILER=cl.exe `
-          -DCMAKE_CXX_COMPILER=cl.exe `
           -DBUILD_SHARED_LIBS=ON `
           -DBUILD_TESTING=OFF `
           -DPYTHON=ON `
