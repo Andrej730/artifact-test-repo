@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: ccache
-      uses: Andrej730/ccache-action@main
+      uses: hendrikmuhs/ccache-action@9eb8b7a50af98b743c606d4520e9a098c5733bef
       with:
         key: win-latest-${{ runner.arch }}
 
