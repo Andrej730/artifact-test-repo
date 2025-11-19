@@ -19,18 +19,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: Andrej730/cache/restore@main
-        with:
-          # Path won't be actually used, we will match by 'version'.
-          path: .
-          key: ${{ github.event.inputs.cache_key }}
-          version: ${{ github.event.inputs.version }}
+      # - name: Restore cache
+      #   uses: actions/cache/restore@v3
+      #   with:
+      #     # Path won't be actually used, we will match by 'version'.
+      #     path: .
+      #     key: ${{ github.event.inputs.cache_key }}
 
-      - name: Upload cached folder as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cache-artifact
-          path: |
-            /home/runner/work/**/*.tzst
+      # - name: Upload cached folder as artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: cache-artifact
+      #     path: |
+      #       /home/runner/work/**/*.tzst
 
