@@ -1,0 +1,28 @@
+name: build-cmake-python
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-imath-test:
+    runs-on: windows-2022
+
+    steps:
+    - name: Configure build
+      run: |
+        Set-PSDebug -Trace 1
+        $ErrorActionPreference = "Stop"
+        $PSNativeCommandUseErrorActionPreference = $true
+
+        curl -L https://raw.githubusercontent.com/Andrej730/vcvarsall-pwsh/refs/heads/master/generate-vcvarsall-env.ps1 -o generate-vcvarsall-env.ps1
+        pwsh -NoProfile -File .\generate-vcvarsall-env.ps1
+        . .\vcvarsall-env.ps1
+
+        git clone https://github.com/python-cmake-buildsystem/python-cmake-buildsystem --depth 1
+        cd python-cmake-buildsystem
+        mkdir build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX="install"
+        cmake --build . --config Release -- /m
+        cmake --install . --config Release
+        ./install/bin/python.exe --version
+        ./install/bin/python.exe -c "print(42)"
