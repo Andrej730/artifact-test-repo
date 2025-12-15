@@ -14,7 +14,7 @@ jobs:
         run: echo hi > cache-test.txt
 
       - name: Cache dependencies
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: .
           key: cache-create-test
