@@ -1,0 +1,33 @@
+name: cmake-headers-install-test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cmake-headers-install-test:
+    runs-on: windows-2022
+
+    steps:
+    - name: Configure build
+      run: |
+        Set-PSDebug -Trace 1
+        $ErrorActionPreference = "Stop"
+
+        curl -L https://raw.githubusercontent.com/Andrej730/vcvarsall-pwsh/refs/heads/master/generate-vcvarsall-env.ps1 -o generate-vcvarsall-env.ps1
+        pwsh -NoProfile -File .\generate-vcvarsall-env.ps1
+        . .\vcvarsall-env.ps1
+
+        $code=@"
+        cmake_minimum_required(VERSION 3.21)
+        project(headers-install)
+        include(GNUInstallDirs)
+        file(GLOB INC_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hxx")
+        install(FILES ${INC_HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+        "@
+        mkdir headers-install && cd headers-install
+        echo $code > CMakeLists.txt
+        mkdir build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=install -G Ninja
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
