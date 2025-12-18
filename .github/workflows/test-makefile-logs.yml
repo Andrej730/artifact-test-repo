@@ -6,6 +6,10 @@ on:
 jobs:
   test-makefile-logs:
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: "1"
+      CLICOLOR_FORCE: "1"
+      CMAKE_COLOR_DIAGNOSTICS: "ON"
 
     steps:
     - name: Checkout code
@@ -19,14 +23,11 @@ jobs:
         uv tool install cmake
         cmake --version
         pip install rich
-        export FORCE_COLOR="1"
-        export CLICOLOR_FORCE="1"
-        unset CI
         python -c "from rich import print; print('[green]Hello, world[/green]')"
         python -c "print('\033[33mHello, world!\033[0m')"
         cd test-makefile-logs
         mkdir build
         cd build
-        cmake .. -DCMAKE_COLOR_DIAGNOSTICS=ON
+        cmake ..
         grep -r COLOR . --color=always
         make -j VERBOSE=1
