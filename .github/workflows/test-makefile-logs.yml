@@ -24,4 +24,6 @@ jobs:
         mkdir build
         cd build
         cmake .. -DCMAKE_COLOR_MAKEFILE=ON
+        grep -r cmake_echo_color . --color=auto
+        grep -r cmake_echo_color . --color=always
         make -j
