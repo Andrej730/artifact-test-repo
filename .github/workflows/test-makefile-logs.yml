@@ -13,6 +13,7 @@ jobs:
 
     - name: Run cmake
       run: |
+        cmake --version
         pip install rich
         export FORCE_COLOR="1"
         python -c "from rich import print; print('[green]Hello, world[/green]')"
