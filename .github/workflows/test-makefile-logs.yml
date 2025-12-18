@@ -24,6 +24,6 @@ jobs:
         cd test-makefile-logs
         mkdir build
         cd build
-        cmake ..
+        cmake .. -DCMAKE_COLOR_DIAGNOSTICS=ON
         grep -r COLOR . --color=always
         make -j VERBOSE=1
