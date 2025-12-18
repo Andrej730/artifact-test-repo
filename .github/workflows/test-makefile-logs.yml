@@ -13,6 +13,7 @@ jobs:
 
     - name: Run cmake
       run: |
+        env
         cmake --version
         pip install rich
         export FORCE_COLOR="1"
