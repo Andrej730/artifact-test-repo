@@ -17,8 +17,7 @@ jobs:
         cmake --version
         pip install rich
         export FORCE_COLOR="1"
-        export CLICOLOR="1"
-        # export CLICOLOR_FORCE="1"
+        export CLICOLOR_FORCE="1"
         unset CI
         python -c "from rich import print; print('[green]Hello, world[/green]')"
         python -c "print('\033[33mHello, world!\033[0m')"
