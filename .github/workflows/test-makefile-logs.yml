@@ -13,6 +13,8 @@ jobs:
 
     - name: Run cmake
       run: |
+        pip install rich
+        python -c "from rich import print; print('[green]Hello, world[/green]')"
         cd test-makefile-logs
         mkdir build
         cd build
