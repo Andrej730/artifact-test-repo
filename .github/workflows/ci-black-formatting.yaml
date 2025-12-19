@@ -2,7 +2,6 @@ name: ci-black-formatting
 
 on:
   push:
-  pull_request:
 
 jobs:
   lint-formatting:
@@ -16,7 +15,7 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           uv tool install ruff
           uv tool install black
-          uv tool install poethepoete
+          uv tool install poethepoet
 
       - name: Black formatter
         id: black
@@ -27,6 +26,7 @@ jobs:
       - name: Black formatter annotations
         id: black-annotations
         run: |
+          env
           uv tool install black-codeclimate
           pip install github_action_utils
           black --diff --check . | black-codeclimate | python .github/workflows/black_to_github_annotations.py
