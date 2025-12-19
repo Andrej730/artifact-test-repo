@@ -25,6 +25,7 @@ jobs:
         pip install rich
         python -c "from rich import print; print('[green]Hello, world[/green]')"
         python -c "print('\033[33mHello, world!\033[0m')"
+        python -c "print('\033[33mHello, \n world!\033[0m')"
         cd test-makefile-logs
         mkdir build
         cd build
