@@ -32,7 +32,7 @@ jobs:
         
     - name: Upload log artifacts (runs even on failure)
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: test-logs
         path: test.log
@@ -40,7 +40,7 @@ jobs:
         
     - name: Upload additional artifacts
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: failure-reports
         path: |
